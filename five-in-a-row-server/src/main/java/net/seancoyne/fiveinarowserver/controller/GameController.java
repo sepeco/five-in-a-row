@@ -1,11 +1,17 @@
 package net.seancoyne.fiveinarowserver.controller;
 
-import org.springframework.http.HttpStatus;
+import lombok.AllArgsConstructor;
+import net.seancoyne.fiveinarowserver.model.MoveRequest;
+import net.seancoyne.fiveinarowserver.model.RegisterRequest;
+import net.seancoyne.fiveinarowserver.service.ApiService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@AllArgsConstructor
 public class GameController {
+
+    private ApiService apiService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index() {
@@ -13,27 +19,27 @@ public class GameController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<?> register(@RequestBody String data) {
-        return new ResponseEntity<>(data, HttpStatus.OK);
+    public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
+        return apiService.register(registerRequest);
     }
 
     @RequestMapping(value = "/checkTurn/{userName}", method = RequestMethod.GET)
     public ResponseEntity<?> checkTurn(@PathVariable("userName") String userName) {
-        return new ResponseEntity<>(userName, HttpStatus.OK);
+        return apiService.checkTurn(userName);
     }
 
-    @RequestMapping(value = "/gameState", method = RequestMethod.GET)
-    public ResponseEntity<?> getGameState() {
-        return new ResponseEntity<>("state", HttpStatus.OK);
+    @RequestMapping(value = "/gameState/{userName}", method = RequestMethod.GET)
+    public ResponseEntity<?> getGameState(@PathVariable("userName") String userName) {
+        return apiService.getGameState(userName);
     }
 
     @RequestMapping(value = "/makeMove/{userName}", method = RequestMethod.PUT)
-    public ResponseEntity<?> makeMove(@PathVariable("userName") String userName, @RequestBody String data) {
-        return new ResponseEntity<>(userName, HttpStatus.OK);
+    public ResponseEntity<?> makeMove(@PathVariable("userName") String userName, @RequestBody MoveRequest moveRequest) {
+        return apiService.makeMove(userName, moveRequest);
     }
 
     @RequestMapping(value = "/disconnect/{userName}", method = RequestMethod.DELETE)
     public ResponseEntity<?> disconnectUser(@PathVariable("userName") String userName) {
-        return new ResponseEntity<>(userName, HttpStatus.OK);
+        return apiService.disconnectUser(userName);
     }
 }
