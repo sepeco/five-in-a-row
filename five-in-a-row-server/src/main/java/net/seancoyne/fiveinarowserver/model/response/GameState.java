@@ -1,4 +1,4 @@
-package net.seancoyne.fiveinarowserver.model;
+package net.seancoyne.fiveinarowserver.model.response;
 
 public enum GameState {
     WAITING_FOR_NEXT_PLAYER_TO_REGISTER,

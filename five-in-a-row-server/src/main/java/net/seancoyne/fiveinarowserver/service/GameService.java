@@ -1,6 +1,8 @@
 package net.seancoyne.fiveinarowserver.service;
 
 import net.seancoyne.fiveinarowserver.model.*;
+import net.seancoyne.fiveinarowserver.model.request.*;
+import net.seancoyne.fiveinarowserver.model.response.*;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;

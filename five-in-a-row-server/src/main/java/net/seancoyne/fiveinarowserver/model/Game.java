@@ -2,6 +2,10 @@ package net.seancoyne.fiveinarowserver.model;
 
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
+import net.seancoyne.fiveinarowserver.model.response.*;
+import net.seancoyne.fiveinarowserver.model.request.DisconnectUserRequest;
+import net.seancoyne.fiveinarowserver.model.request.GameStateRequest;
+import net.seancoyne.fiveinarowserver.model.request.MoveRequest;
 
 import java.util.HashMap;
 import java.util.Map;

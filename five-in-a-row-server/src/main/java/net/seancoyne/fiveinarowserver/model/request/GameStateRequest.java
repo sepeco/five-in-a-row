@@ -1,4 +1,4 @@
-package net.seancoyne.fiveinarowserver.model;
+package net.seancoyne.fiveinarowserver.model.request;
 
 import lombok.Builder;
 import lombok.Getter;

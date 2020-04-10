@@ -2,7 +2,10 @@ package net.seancoyne.fiveinarowserver.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import net.seancoyne.fiveinarowserver.model.*;
+import net.seancoyne.fiveinarowserver.model.request.*;
+import net.seancoyne.fiveinarowserver.model.response.GameStateResponse;
+import net.seancoyne.fiveinarowserver.model.response.RegisterResponse;
+import net.seancoyne.fiveinarowserver.model.response.ResponseState;
 import net.seancoyne.fiveinarowserver.validate.RequestDetailsValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,14 +19,14 @@ public class ApiService {
     private RequestDetailsValidator requestDetailsValidator;
     private GameService gameService;
 
-    public ResponseEntity<?> register(RegisterRequest registerRequest) {
+    public ResponseEntity<?> registerPlayer(RegisterRequest registerRequest) {
 
         if (requestDetailsValidator.requiredParametersIsInvalid(registerRequest)) {
             log.warn("Provided parameters are not valid: {}", registerRequest);
             return new ResponseEntity<>("Required Parameters Are Invalid", HttpStatus.BAD_REQUEST);
         }
 
-        RegisterResponse response = RegisterResponse.builder().build();
+        RegisterResponse response = gameService.registerPlayer(registerRequest);
 
         if (ResponseState.FAILED.equals(response.getResponseState())) {
             return new ResponseEntity<>(response, HttpStatus.UNPROCESSABLE_ENTITY);
@@ -32,14 +35,14 @@ public class ApiService {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> checkTurn(String userName) {
+    public ResponseEntity<?> createGame(CreateGameRequest createGameRequest) {
 
-        if (requestDetailsValidator.requiredParametersIsInvalid(userName)) {
-            log.warn("Provided parameters are not valid: {}", userName);
+        if (requestDetailsValidator.requiredParametersIsInvalid(createGameRequest)) {
+            log.warn("Provided parameters are not valid: {}", createGameRequest);
             return new ResponseEntity<>("Required Parameters Are Invalid", HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>(userName, HttpStatus.OK);
+        return new ResponseEntity<>(gameService.createGame(createGameRequest), HttpStatus.OK);
     }
 
     public ResponseEntity<?> getGameState(Integer gameId, String userName) {
@@ -63,23 +66,28 @@ public class ApiService {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> makeMove(String userName, MoveRequest moveRequest) {
+    public ResponseEntity<?> makeMove(MoveRequest moveRequest) {
 
-        if (requestDetailsValidator.requiredParametersIsInvalid(userName, moveRequest)) {
-            log.warn("Provided parameters are not valid: {}, {}", userName, moveRequest);
+        if (requestDetailsValidator.requiredParametersIsInvalid(moveRequest)) {
+            log.warn("Provided parameters are not valid: {}", moveRequest);
             return new ResponseEntity<>("Required Parameters Are Invalid", HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>(userName, HttpStatus.OK);
+        return new ResponseEntity<>(gameService.makeMove(moveRequest), HttpStatus.OK);
     }
 
-    public ResponseEntity<?> disconnectUser(String userName) {
+    public ResponseEntity<?> disconnectUser(Integer gameId, String username) {
 
-        if (requestDetailsValidator.requiredParametersIsInvalid(userName)) {
-            log.warn("Provided parameters are not valid: {}", userName);
+        if (requestDetailsValidator.requiredParametersIsInvalid(gameId, username)) {
+            log.warn("Provided parameters are not valid: {}, {}", gameId, username);
             return new ResponseEntity<>("Required Parameters Are Invalid", HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>(userName, HttpStatus.OK);
+        DisconnectUserRequest disconnectUserRequest = DisconnectUserRequest.builder()
+                .gameId(gameId)
+                .username(username)
+                .build();
+
+        return new ResponseEntity<>(gameService.disconnectUser(disconnectUserRequest), HttpStatus.OK);
     }
 }
