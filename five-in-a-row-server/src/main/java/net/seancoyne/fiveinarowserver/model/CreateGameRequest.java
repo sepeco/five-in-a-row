@@ -3,8 +3,7 @@ package net.seancoyne.fiveinarowserver.model;
 import lombok.Data;
 
 @Data
-public class MoveRequest {
-    private Integer column;
-    private Integer gameId;
+public class CreateGameRequest {
     private String username;
+    private String selectedColour;
 }

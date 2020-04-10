@@ -28,8 +28,9 @@ public class GameController {
         return apiService.checkTurn(userName);
     }
 
-    @RequestMapping(value = "/gameState/{userName}", method = RequestMethod.GET)
-    public ResponseEntity<?> getGameState(@PathVariable("userName") String userName) {
+    @RequestMapping(value = "/gameState/{gameId}/user/{userName}", method = RequestMethod.GET)
+    public ResponseEntity<?> getGameState(@PathVariable("userName") Integer gameId,
+                                          @PathVariable("userName") String userName) {
         return apiService.getGameState(userName);
     }
 

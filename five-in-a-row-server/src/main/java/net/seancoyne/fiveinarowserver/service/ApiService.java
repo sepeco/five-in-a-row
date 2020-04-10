@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class ApiService {
 
     private RequestDetailsValidator requestDetailsValidator;
-    private BizService bizService;
+    private GameService gameService;
 
     public ResponseEntity<?> register(RegisterRequest registerRequest) {
 
@@ -23,7 +23,7 @@ public class ApiService {
             return new ResponseEntity<>("Required Parameters Are Invalid", HttpStatus.BAD_REQUEST);
         }
 
-        RegisterResponse response = bizService.register(registerRequest);
+        RegisterResponse response = RegisterResponse.builder().build();
 
         if (ResponseState.FAILED.equals(response.getResponseState())) {
             return new ResponseEntity<>(response, HttpStatus.UNPROCESSABLE_ENTITY);
@@ -42,14 +42,19 @@ public class ApiService {
         return new ResponseEntity<>(userName, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> getGameState(String userName) {
+    public ResponseEntity<?> getGameState(Integer gameId, String userName) {
 
-        if (requestDetailsValidator.requiredParametersIsInvalid(userName)) {
-            log.warn("Provided parameters are not valid: {}", userName);
+        if (requestDetailsValidator.requiredParametersIsInvalid(gameId, userName)) {
+            log.warn("Provided parameters are not valid: {}, {}", gameId, userName);
             return new ResponseEntity<>("Required Parameters Are Invalid", HttpStatus.BAD_REQUEST);
         }
 
-        GameStateResponse response = bizService.getGameState(userName);
+        GameStateRequest gameStateRequest = GameStateRequest.builder()
+                .gameId(gameId)
+                .username(userName)
+                .build();
+
+        GameStateResponse response = gameService.getGameStateForUser(gameStateRequest);
 
         if (ResponseState.FAILED.equals(response.getResponseState())) {
             return new ResponseEntity<>(response, HttpStatus.UNPROCESSABLE_ENTITY);

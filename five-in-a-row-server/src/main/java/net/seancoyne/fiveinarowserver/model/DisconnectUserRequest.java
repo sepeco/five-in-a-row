@@ -3,8 +3,7 @@ package net.seancoyne.fiveinarowserver.model;
 import lombok.Data;
 
 @Data
-public class RegisterRequest {
+public class DisconnectUserRequest {
+    private String username;
     private Integer gameId;
-    private String userName;
-    private String colour;
 }

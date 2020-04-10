@@ -5,10 +5,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class GameStateResponse {
+public class DisconnectResponse {
     private ResponseState responseState;
-    private GameState gameState;
-    private String[][] currentBoard;
     private String message;
-    private boolean winner;
 }

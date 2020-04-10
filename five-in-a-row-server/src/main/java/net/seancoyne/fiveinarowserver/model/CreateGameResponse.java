@@ -5,10 +5,8 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class GameStateResponse {
+public class CreateGameResponse {
     private ResponseState responseState;
-    private GameState gameState;
-    private String[][] currentBoard;
+    private Integer gameId;
     private String message;
-    private boolean winner;
 }
