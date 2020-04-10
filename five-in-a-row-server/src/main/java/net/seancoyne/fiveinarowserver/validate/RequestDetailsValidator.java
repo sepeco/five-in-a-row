@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RequestDetailsValidator {
 
-    public boolean requiredParametersIsInvalid(Object ... parameters) {
+    public boolean requiredParametersIsInvalid(Object... parameters) {
 
         for (Object param : parameters) {
 

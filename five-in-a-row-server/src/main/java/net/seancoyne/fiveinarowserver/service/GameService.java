@@ -1,6 +1,6 @@
 package net.seancoyne.fiveinarowserver.service;
 
-import net.seancoyne.fiveinarowserver.model.*;
+import net.seancoyne.fiveinarowserver.model.FiveInARowGame;
 import net.seancoyne.fiveinarowserver.model.request.*;
 import net.seancoyne.fiveinarowserver.model.response.*;
 import org.springframework.stereotype.Component;
@@ -11,32 +11,32 @@ import java.util.Map;
 @Component
 public class GameService {
 
-    private Map<Integer, Game> createdGames;
+    private Map<Integer, FiveInARowGame> createdGames;
 
     public GameService() {
         createdGames = new HashMap<>();
     }
 
     public CreateGameResponse createGame(CreateGameRequest createGameRequest) {
-        Game newGame = new Game();
+        FiveInARowGame newFiveInARowGame = new FiveInARowGame();
 
-        RegisterResponse registerResponse = newGame.registerPlayer(
+        RegisterResponse registerResponse = newFiveInARowGame.registerPlayer(
                 createGameRequest.getUsername(),
                 createGameRequest.getSelectedColour()
         );
 
         if (registerResponse.getResponseState().equals(ResponseState.SUCCESS)) {
-            createdGames.put(newGame.getGameId(), newGame);
+            createdGames.put(newFiveInARowGame.getGameId(), newFiveInARowGame);
 
             return CreateGameResponse.builder()
                     .responseState(ResponseState.SUCCESS)
-                    .gameId(newGame.getGameId())
+                    .gameId(newFiveInARowGame.getGameId())
                     .message("New game created! Send the game id to your friend")
                     .build();
         } else {
             return CreateGameResponse.builder()
                     .responseState(ResponseState.FAILED)
-                    .gameId(newGame.getGameId())
+                    .gameId(newFiveInARowGame.getGameId())
                     .message("Could not create a new game for this user")
                     .build();
         }
@@ -44,57 +44,57 @@ public class GameService {
 
     public RegisterResponse registerPlayer(RegisterRequest registerRequest) {
 
-        Game selectedGame = createdGames.get(registerRequest.getGameId());
+        FiveInARowGame selectedFiveInARowGame = createdGames.get(registerRequest.getGameId());
 
-        if (selectedGame == null) {
+        if (selectedFiveInARowGame == null) {
             return RegisterResponse.builder()
                     .responseState(ResponseState.FAILED)
                     .message("No game with this ID exists")
                     .build();
         }
 
-        return selectedGame.registerPlayer(registerRequest.getUserName(), registerRequest.getColour());
+        return selectedFiveInARowGame.registerPlayer(registerRequest.getUserName(), registerRequest.getColour());
     }
 
     public MoveResponse makeMove(MoveRequest moveRequest) {
 
-        Game selectedGame = createdGames.get(moveRequest.getGameId());
+        FiveInARowGame selectedFiveInARowGame = createdGames.get(moveRequest.getGameId());
 
-        if (selectedGame == null) {
+        if (selectedFiveInARowGame == null) {
             return MoveResponse.builder()
                     .responseState(ResponseState.FAILED)
                     .message("No game with this ID exists")
                     .build();
         }
 
-        return selectedGame.makeMove(moveRequest);
+        return selectedFiveInARowGame.makeMove(moveRequest);
     }
 
     public GameStateResponse getGameStateForUser(GameStateRequest gameStateRequest) {
 
-        Game selectedGame = createdGames.get(gameStateRequest.getGameId());
+        FiveInARowGame selectedFiveInARowGame = createdGames.get(gameStateRequest.getGameId());
 
-        if (selectedGame == null) {
+        if (selectedFiveInARowGame == null) {
             return GameStateResponse.builder()
                     .responseState(ResponseState.FAILED)
                     .message("No game with this ID exists")
                     .build();
         }
 
-        return selectedGame.getGameStateForUser(gameStateRequest);
+        return selectedFiveInARowGame.getGameStateForUser(gameStateRequest);
     }
 
     public DisconnectResponse disconnectUser(DisconnectUserRequest disconnectUserRequest) {
 
-        Game selectedGame = createdGames.get(disconnectUserRequest.getGameId());
+        FiveInARowGame selectedFiveInARowGame = createdGames.get(disconnectUserRequest.getGameId());
 
-        if (selectedGame == null) {
+        if (selectedFiveInARowGame == null) {
             return DisconnectResponse.builder()
                     .responseState(ResponseState.FAILED)
                     .message("No game with this ID exists")
                     .build();
         }
 
-        return selectedGame.disconnectUser(disconnectUserRequest);
+        return selectedFiveInARowGame.disconnectUser(disconnectUserRequest);
     }
 }

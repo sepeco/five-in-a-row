@@ -2,10 +2,10 @@ package net.seancoyne.fiveinarowserver.model;
 
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
-import net.seancoyne.fiveinarowserver.model.response.*;
 import net.seancoyne.fiveinarowserver.model.request.DisconnectUserRequest;
 import net.seancoyne.fiveinarowserver.model.request.GameStateRequest;
 import net.seancoyne.fiveinarowserver.model.request.MoveRequest;
+import net.seancoyne.fiveinarowserver.model.response.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +13,7 @@ import java.util.Random;
 
 @Data
 @Log4j2
-public class Game {
+public class FiveInARowGame {
     private Integer gameId;
     private Map<String, String> registeredPlayers;
     private String lastMoveByPlayer;
@@ -21,7 +21,7 @@ public class Game {
     private String[][] board;
     private boolean activeGame;
 
-    public Game() {
+    public FiveInARowGame() {
         gameId = new Random().nextInt(1000);
         registeredPlayers = new HashMap<>();
         board = new String[6][9];

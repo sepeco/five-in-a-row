@@ -19,25 +19,25 @@ public class GameController {
         return "Welcome to 5 in a row!!";
     }
 
+    @RequestMapping(value = "/createGame", method = RequestMethod.POST)
+    public ResponseEntity<?> createGame(@RequestBody CreateGameRequest createGameRequest) {
+        return apiService.createGame(createGameRequest);
+    }
+
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
         return apiService.registerPlayer(registerRequest);
     }
 
-    @RequestMapping(value = "/createGame", method = RequestMethod.GET)
-    public ResponseEntity<?> createGame(@RequestBody CreateGameRequest createGameRequest) {
-        return apiService.createGame(createGameRequest);
+    @RequestMapping(value = "/makeMove", method = RequestMethod.PUT)
+    public ResponseEntity<?> makeMove(@RequestBody MoveRequest moveRequest) {
+        return apiService.makeMove(moveRequest);
     }
 
     @RequestMapping(value = "/gameState/{gameId}/user/{userName}", method = RequestMethod.GET)
     public ResponseEntity<?> getGameState(@PathVariable("userName") Integer gameId,
                                           @PathVariable("userName") String userName) {
         return apiService.getGameState(gameId, userName);
-    }
-
-    @RequestMapping(value = "/makeMove", method = RequestMethod.PUT)
-    public ResponseEntity<?> makeMove(@RequestBody MoveRequest moveRequest) {
-        return apiService.makeMove(moveRequest);
     }
 
     @RequestMapping(value = "/disconnect/{gameId}/user/{userName}", method = RequestMethod.DELETE)
