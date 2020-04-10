@@ -96,7 +96,7 @@ public class FiveInARowGame {
 
         if (!activeGame) {
             return GameStateResponse.builder()
-                    .responseState(ResponseState.FAILED)
+                    .responseState(ResponseState.SUCCESS)
                     .gameState(GameState.GAME_OVER)
                     .message("This game is over. Try creating a new game")
                     .build();
@@ -178,7 +178,7 @@ public class FiveInARowGame {
         }
 
         // starting at the bottom of the column put their disk at the next available space
-        for (int i = height - 1; i == 0; i--) {
+        for (int i = height - 1; i >= 0; i--) {
 
             // if the space is free place their disk in that space and break the loop
             if (board[moveRequest.getColumn() - 1][i] == null) {

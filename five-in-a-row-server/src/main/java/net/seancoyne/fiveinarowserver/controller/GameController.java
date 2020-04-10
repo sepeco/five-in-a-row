@@ -35,13 +35,13 @@ public class GameController {
     }
 
     @RequestMapping(value = "/gameState/{gameId}/user/{userName}", method = RequestMethod.GET)
-    public ResponseEntity<?> getGameState(@PathVariable("userName") Integer gameId,
+    public ResponseEntity<?> getGameState(@PathVariable("gameId") Integer gameId,
                                           @PathVariable("userName") String userName) {
         return apiService.getGameState(gameId, userName);
     }
 
     @RequestMapping(value = "/disconnect/{gameId}/user/{userName}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> disconnectUser(@PathVariable("userName") Integer gameId,
+    public ResponseEntity<?> disconnectUser(@PathVariable("gameId") Integer gameId,
                                             @PathVariable("userName") String userName) {
         return apiService.disconnectUser(gameId, userName);
     }
