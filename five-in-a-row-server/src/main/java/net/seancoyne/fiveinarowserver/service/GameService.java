@@ -1,6 +1,6 @@
 package net.seancoyne.fiveinarowserver.service;
 
-import net.seancoyne.fiveinarowserver.model.FiveInARowGame;
+import net.seancoyne.fiveinarowserver.games.FiveInARowGame;
 import net.seancoyne.fiveinarowserver.model.request.*;
 import net.seancoyne.fiveinarowserver.model.response.*;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package net.seancoyne.fiveinarowserver.model;
+package net.seancoyne.fiveinarowserver.games;
 
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
@@ -63,6 +63,9 @@ public class FiveInARowGame {
         }
 
         registeredPlayers.put(username, playerColour);
+
+        // Most recently registered player will not make the first move
+        lastMoveByPlayer = username;
 
         return RegisterResponse.builder()
                 .responseState(ResponseState.SUCCESS)
@@ -157,8 +160,8 @@ public class FiveInARowGame {
                     .build();
         }
 
-        int width = board.length;
-        int height = board[0].length;
+        int height = board.length;
+        int  width = board[0].length;
 
         if (moveRequest.getColumn() > width || moveRequest.getColumn() < 0) {
             return MoveResponse.builder()
@@ -169,7 +172,7 @@ public class FiveInARowGame {
         }
 
         // if the column is full return an error
-        if (board[moveRequest.getColumn() - 1][0] != null) {
+        if (board[0][moveRequest.getColumn() - 1] != null) {
             return MoveResponse.builder()
                     .responseState(ResponseState.FAILED)
                     .tryAgain(true)
@@ -181,8 +184,8 @@ public class FiveInARowGame {
         for (int i = height - 1; i >= 0; i--) {
 
             // if the space is free place their disk in that space and break the loop
-            if (board[moveRequest.getColumn() - 1][i] == null) {
-                board[moveRequest.getColumn() - 1][i] = registeredPlayers.get(username);
+            if (board[i][moveRequest.getColumn() - 1] == null) {
+                board[i][moveRequest.getColumn() - 1] = registeredPlayers.get(username);
                 break;
             }
         }
