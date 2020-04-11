@@ -232,42 +232,52 @@ public class FiveInARowGame {
     }
 
     private String checkForWinningColour() {
-        final int HEIGHT = board.length;
-        final int WIDTH = board[0].length;
-        final String EMPTY_SLOT = null;
-        for (int r = 0; r < HEIGHT; r++) { // iterate rows, bottom to top
-            for (int c = 0; c < WIDTH; c++) { // iterate columns, left to right
-                String colour = board[r][c];
-                if (colour == EMPTY_SLOT)
-                    continue; // don't check empty slots
+        int height = board.length;
+        int length = board[0].length;
 
-                if (c + 4 < WIDTH &&
-                        colour == board[r][c + 1] && // look right
-                        colour == board[r][c + 2] &&
-                        colour == board[r][c + 3] &&
-                        colour == board[r][c + 4])
+        for (int row = 0; row < height; row++) {
+            for (int column = 0; column < length; column++) {
+                String colour = board[row][column];
+
+                // If the first cell is empty skip looking for 5 in a row
+                if (colour == null)
+                    continue;
+
+                // Look at the next 5 elements to the right of the current element to see if they are the same
+                if (column + 4 < length &&
+                        colour == board[row][column + 1] &&
+                        colour == board[row][column + 2] &&
+                        colour == board[row][column + 3] &&
+                        colour == board[row][column + 4])
                     return colour;
-                if (r + 4 < HEIGHT) {
-                    if (colour == board[r + 1][c] && // look up
-                            colour == board[r + 2][c] &&
-                            colour == board[r + 3][c] &&
-                            colour == board[r + 4][c])
-                        return colour;
-                    if (c + 4 < WIDTH &&
-                            colour == board[r + 1][c + 1] && // look up & right
-                            colour == board[r + 2][c + 2] &&
-                            colour == board[r + 3][c + 3] &&
-                            colour == board[r + 3][c + 4])
-                        return colour;
-                    if (c - 4 >= 0 &&
-                            colour == board[r + 1][c - 1] && // look up & left
-                            colour == board[r + 2][c - 2] &&
-                            colour == board[r + 3][c - 3] &&
-                            colour == board[r + 3][c - 4])
-                        return colour;
-                }
+
+                // Look at the 5 elements above the current element to see if they are the same
+                if (row + 4 < height &&
+                        colour == board[row + 1][column] && // look up
+                        colour == board[row + 2][column] &&
+                        colour == board[row + 3][column] &&
+                        colour == board[row + 4][column])
+                    return colour;
+
+                // Look at the 5 diagonally to the right to see if they are the same
+                if (row + 4 < height &&
+                        column + 4 < length &&
+                        colour == board[row + 1][column + 1] &&
+                        colour == board[row + 2][column + 2] &&
+                        colour == board[row + 3][column + 3] &&
+                        colour == board[row + 4][column + 4])
+                    return colour;
+
+                // Look at the 5 diagonally to the left to see if they are the same
+                if (row + 4 < height &&
+                        column - 4 >= 0 &&
+                        colour == board[row + 1][column - 1] && // look up & left
+                        colour == board[row + 2][column - 2] &&
+                        colour == board[row + 3][column - 3] &&
+                        colour == board[row + 4][column - 4])
+                    return colour;
             }
         }
-        return EMPTY_SLOT; // no winner found
+        return null; // nothing found
     }
 }
