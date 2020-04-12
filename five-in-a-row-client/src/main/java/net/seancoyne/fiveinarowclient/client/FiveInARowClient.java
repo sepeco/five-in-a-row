@@ -2,6 +2,7 @@ package net.seancoyne.fiveinarowclient.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import net.seancoyne.fiveinarowclient.model.Player;
 import net.seancoyne.fiveinarowclient.model.request.CreateGameRequest;
@@ -18,23 +19,19 @@ import org.springframework.web.client.RestTemplate;
 
 @Log4j2
 @Component
+@RequiredArgsConstructor
 public class FiveInARowClient {
 
-    private final String serverHost = "http://localhost:8080";
+    private String serverHost = "http://localhost:8080";
 
-    private RestTemplate restTemplate;
-    private HttpHeaders headers;
-    private ObjectMapper objectMapper;
-
-    public FiveInARowClient() {
-        this.restTemplate = new RestTemplate();
-        this.headers = new HttpHeaders();
-        this.objectMapper = new ObjectMapper();
-        headers.add("Content-Type", "application/json");
-        headers.add("Accept", "*/*");
-    }
+    private final RestTemplate restTemplate;
+    private final HttpHeaders httpHeaders;
+    private final ObjectMapper objectMapper;
 
     public CreateGameResponse createGame(Player player) {
+        httpHeaders.add("Content-Type", "application/json");
+        httpHeaders.add("Accept", "*/*");
+
         String endpoint = "/createGame";
 
         CreateGameRequest request = CreateGameRequest.builder()
@@ -43,7 +40,7 @@ public class FiveInARowClient {
                 .build();
 
         try {
-            HttpEntity<String> requestEntity = new HttpEntity<String>(objectMapper.writeValueAsString(request), headers);
+            HttpEntity<String> requestEntity = new HttpEntity<String>(objectMapper.writeValueAsString(request), httpHeaders);
             ResponseEntity<CreateGameResponse> responseEntity = restTemplate.exchange(
                     serverHost + endpoint,
                     HttpMethod.POST,
@@ -58,6 +55,9 @@ public class FiveInARowClient {
     }
 
     public RegisterResponse registerPlayer(Player player) {
+        httpHeaders.add("Content-Type", "application/json");
+        httpHeaders.add("Accept", "*/*");
+
         String endpoint = "/register";
 
         RegisterRequest request = RegisterRequest.builder()
@@ -67,7 +67,7 @@ public class FiveInARowClient {
                 .build();
 
         try {
-            HttpEntity<String> requestEntity = new HttpEntity<String>(objectMapper.writeValueAsString(request), headers);
+            HttpEntity<String> requestEntity = new HttpEntity<String>(objectMapper.writeValueAsString(request), httpHeaders);
             ResponseEntity<RegisterResponse> responseEntity = restTemplate.exchange(
                     serverHost + endpoint,
                     HttpMethod.POST,
@@ -82,11 +82,14 @@ public class FiveInARowClient {
     }
 
     public GameStateResponse getGameState(Player player) {
+        httpHeaders.add("Content-Type", "application/json");
+        httpHeaders.add("Accept", "*/*");
+
         String endpoint = "/gameState/";
         String resource = "/user/";
 
         try {
-            HttpEntity<String> requestEntity = new HttpEntity<String>("", headers);
+            HttpEntity<String> requestEntity = new HttpEntity<String>("", httpHeaders);
             ResponseEntity<GameStateResponse> responseEntity = restTemplate.exchange(
                     serverHost + endpoint + player.getGameId() + resource + player.getUsername(),
                     HttpMethod.GET,
@@ -101,6 +104,9 @@ public class FiveInARowClient {
     }
 
     public MoveResponse makeMove(Player player, int move) {
+        httpHeaders.add("Content-Type", "application/json");
+        httpHeaders.add("Accept", "*/*");
+
         String endpoint = "/makeMove";
 
         MoveRequest request = MoveRequest.builder()
@@ -109,7 +115,7 @@ public class FiveInARowClient {
                 .username(player.getUsername())
                 .build();
         try {
-            HttpEntity<String> requestEntity = new HttpEntity<String>(objectMapper.writeValueAsString(request), headers);
+            HttpEntity<String> requestEntity = new HttpEntity<String>(objectMapper.writeValueAsString(request), httpHeaders);
             ResponseEntity<MoveResponse> responseEntity = restTemplate.exchange(
                     serverHost + endpoint,
                     HttpMethod.PUT,
@@ -124,10 +130,13 @@ public class FiveInARowClient {
     }
 
     public DisconnectResponse disconnect(Player player) {
-        String endpoint = "/gameState/";
+        httpHeaders.add("Content-Type", "application/json");
+        httpHeaders.add("Accept", "*/*");
+
+        String endpoint = "/disconnect/";
         String resource = "/user/";
         try {
-            HttpEntity<String> requestEntity = new HttpEntity<String>("", headers);
+            HttpEntity<String> requestEntity = new HttpEntity<String>("", httpHeaders);
             ResponseEntity<DisconnectResponse> responseEntity = restTemplate.exchange(
                     serverHost + endpoint + player.getGameId() + resource + player.getUsername(),
                     HttpMethod.DELETE,

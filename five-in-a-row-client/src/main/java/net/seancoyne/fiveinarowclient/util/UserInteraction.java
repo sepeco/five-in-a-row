@@ -1,33 +1,30 @@
 package net.seancoyne.fiveinarowclient.util;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 @Component
+@RequiredArgsConstructor
 public class UserInteraction {
 
-    private BufferedReader br;
-
-    public UserInteraction() {
-        br  = new BufferedReader(new InputStreamReader(System.in));
-    }
+    private final BufferedReader bufferedReader;
 
     public String getPlayerStringInputWithMessage(String message) throws IOException {
         System.out.println(message);
-        return br.readLine();
+        return bufferedReader.readLine();
     }
 
     public Integer getPlayerIntegerInputWithMessage(String message) throws IOException {
         System.out.println(message);
-        return Integer.parseInt(br.readLine());
+        return Integer.parseInt(bufferedReader.readLine());
     }
 
     public Boolean getPlayerBooleanInputWithMessage(String message) throws IOException {
         System.out.println(message);
-        return Boolean.parseBoolean(br.readLine());
+        return Boolean.parseBoolean(bufferedReader.readLine());
     }
 
     public void displayPlayerMessage(String message) {

@@ -111,7 +111,7 @@ public class GameService {
         gameOver(isWinner);
     }
 
-    public void gameOver(boolean winner) {
+    private void gameOver(boolean winner) {
         userInteraction.displayPlayerMessage(winner ? "Game over. You are the winner" : "Game over. You didn't win");
     }
 

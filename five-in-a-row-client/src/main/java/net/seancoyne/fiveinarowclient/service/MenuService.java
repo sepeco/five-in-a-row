@@ -41,7 +41,7 @@ public class MenuService {
         }
     }
 
-    public void joinExistingGame() {
+    private void joinExistingGame() {
 
         boolean gameJoined = false;
         boolean tryingToJoin = true;
@@ -72,7 +72,7 @@ public class MenuService {
         }
     }
 
-    public void createNewGame() {
+    private void createNewGame() {
         boolean gameCreated = false;
         boolean tryingToCreate = true;
 
@@ -89,7 +89,7 @@ public class MenuService {
                 } else {
                     tryingToCreate = userInteraction.getPlayerBooleanInputWithMessage("Would you like to try again? (true or false)");
                 }
-            } catch (Exception e) {
+            } catch (IOException e) {
                 log.error("Error occurred creating the game", e);
             }
         }
@@ -98,12 +98,12 @@ public class MenuService {
             if (gameCreated) {
                 gameService.play();
             }
-        } catch (Exception e) {
+        } catch (IOException | InterruptedException e) {
             log.error("Error occurred playing the game", e);
         }
     }
 
-    public void collectPlayerUsername() {
+    private void collectPlayerUsername() {
         try {
             // Get their username
             player.setUsername(userInteraction.getPlayerStringInputWithMessage("Please Provide Your Username:"));
@@ -112,7 +112,7 @@ public class MenuService {
         }
     }
 
-    public void collectPlayerColourChoice() {
+    private void collectPlayerColourChoice() {
         try {
             // Get their colour choice
             player.setColourChoice(userInteraction.getPlayerStringInputWithMessage("Please Provide Your Colour Choice (X or O):"));
@@ -121,7 +121,7 @@ public class MenuService {
         }
     }
 
-    public void collectExistingGameInfo() {
+    private void collectExistingGameInfo() {
         try {
             // Get their game info
             player.setGameId(userInteraction.getPlayerIntegerInputWithMessage("Please Provide The Existing Game ID:"));
