@@ -1,9 +1,6 @@
 package net.seancoyne.fiveinarowserver.service;
 
-import net.seancoyne.fiveinarowserver.model.request.CreateGameRequest;
-import net.seancoyne.fiveinarowserver.model.request.GameStateRequest;
-import net.seancoyne.fiveinarowserver.model.request.MoveRequest;
-import net.seancoyne.fiveinarowserver.model.request.RegisterRequest;
+import net.seancoyne.fiveinarowserver.model.request.*;
 import net.seancoyne.fiveinarowserver.model.response.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -203,5 +200,57 @@ class GameServiceTest {
         assertNull(playerOneStateResponse.getGameState());
         assertNull(playerOneStateResponse.getCurrentBoard());
         assertFalse(playerOneStateResponse.isWinner());
+    }
+
+    @Test
+    void test_disconnectUser_success() {
+        // Given
+        String playerOne = "someUsername";
+        String playerTwo = "newUsername";
+
+        CreateGameRequest createGameRequest = new CreateGameRequest();
+        createGameRequest.setUsername(playerOne);
+        createGameRequest.setSelectedColour("X");
+        CreateGameResponse createGameResponse = testInstance.createGame(createGameRequest);
+
+        RegisterRequest registerRequest = new RegisterRequest();
+        registerRequest.setUserName(playerTwo);
+        registerRequest.setColour("O");
+        registerRequest.setGameId(createGameResponse.getGameId());
+        testInstance.registerPlayer(registerRequest);
+
+        DisconnectUserRequest disconnectUserRequest = DisconnectUserRequest.builder()
+                .username(playerTwo)
+                .gameId(createGameResponse.getGameId())
+                .build();
+
+        // When
+        DisconnectResponse response = testInstance.disconnectUser(disconnectUserRequest);
+
+        // Then
+        assertNotNull(response);
+
+        assertEquals(ResponseState.SUCCESS, response.getResponseState());
+        assertEquals("User disconnected, game over", response.getMessage());
+    }
+
+    @Test
+    void test_disconnectUser_unknown_game() {
+        // Given
+        String playerTwo = "newUsername";
+
+        DisconnectUserRequest disconnectUserRequest = DisconnectUserRequest.builder()
+                .username(playerTwo)
+                .gameId(0)
+                .build();
+
+        // When
+        DisconnectResponse response = testInstance.disconnectUser(disconnectUserRequest);
+
+        // Then
+        assertNotNull(response);
+
+        assertEquals(ResponseState.FAILED, response.getResponseState());
+        assertEquals("No game with this ID exists", response.getMessage());
     }
 }

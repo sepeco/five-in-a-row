@@ -3,9 +3,7 @@ package net.seancoyne.fiveinarowserver.service;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import net.seancoyne.fiveinarowserver.model.request.*;
-import net.seancoyne.fiveinarowserver.model.response.GameStateResponse;
-import net.seancoyne.fiveinarowserver.model.response.RegisterResponse;
-import net.seancoyne.fiveinarowserver.model.response.ResponseState;
+import net.seancoyne.fiveinarowserver.model.response.*;
 import net.seancoyne.fiveinarowserver.validate.RequestDetailsValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +40,13 @@ public class ApiService {
             return new ResponseEntity<>("Required Parameters Are Invalid", HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>(gameService.createGame(createGameRequest), HttpStatus.OK);
+        CreateGameResponse response = gameService.createGame(createGameRequest);
+
+        if (ResponseState.FAILED.equals(response.getResponseState())) {
+            return new ResponseEntity<>(response, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     public ResponseEntity<?> getGameState(Integer gameId, String userName) {
@@ -73,7 +77,13 @@ public class ApiService {
             return new ResponseEntity<>("Required Parameters Are Invalid", HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>(gameService.makeMove(moveRequest), HttpStatus.OK);
+        MoveResponse response = gameService.makeMove(moveRequest);
+
+        if (ResponseState.FAILED.equals(response.getResponseState())) {
+            return new ResponseEntity<>(response, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     public ResponseEntity<?> disconnectUser(Integer gameId, String username) {
@@ -88,6 +98,12 @@ public class ApiService {
                 .username(username)
                 .build();
 
-        return new ResponseEntity<>(gameService.disconnectUser(disconnectUserRequest), HttpStatus.OK);
+        DisconnectResponse response = gameService.disconnectUser(disconnectUserRequest);
+
+        if (ResponseState.FAILED.equals(response.getResponseState())) {
+            return new ResponseEntity<>(response, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
