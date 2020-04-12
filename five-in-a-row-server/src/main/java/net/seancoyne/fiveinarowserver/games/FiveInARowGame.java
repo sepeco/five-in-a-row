@@ -161,9 +161,9 @@ public class FiveInARowGame {
         }
 
         int height = board.length;
-        int  width = board[0].length;
+        int width = board[0].length;
 
-        if (moveRequest.getColumn()-1 > width || moveRequest.getColumn()-1 < 0) {
+        if (moveRequest.getColumn() - 1 > width || moveRequest.getColumn() - 1 < 0) {
             return MoveResponse.builder()
                     .responseState(ResponseState.FAILED)
                     .tryAgain(true)
