@@ -29,9 +29,6 @@ public class FiveInARowClient {
     private final ObjectMapper objectMapper;
 
     public CreateGameResponse createGame(Player player) {
-        httpHeaders.add("Content-Type", "application/json");
-        httpHeaders.add("Accept", "*/*");
-
         String endpoint = "/createGame";
 
         CreateGameRequest request = CreateGameRequest.builder()
@@ -55,9 +52,6 @@ public class FiveInARowClient {
     }
 
     public RegisterResponse registerPlayer(Player player) {
-        httpHeaders.add("Content-Type", "application/json");
-        httpHeaders.add("Accept", "*/*");
-
         String endpoint = "/register";
 
         RegisterRequest request = RegisterRequest.builder()
@@ -82,9 +76,6 @@ public class FiveInARowClient {
     }
 
     public GameStateResponse getGameState(Player player) {
-        httpHeaders.add("Content-Type", "application/json");
-        httpHeaders.add("Accept", "*/*");
-
         String endpoint = "/gameState/";
         String resource = "/user/";
 
@@ -104,9 +95,6 @@ public class FiveInARowClient {
     }
 
     public MoveResponse makeMove(Player player, int move) {
-        httpHeaders.add("Content-Type", "application/json");
-        httpHeaders.add("Accept", "*/*");
-
         String endpoint = "/makeMove";
 
         MoveRequest request = MoveRequest.builder()
@@ -130,9 +118,6 @@ public class FiveInARowClient {
     }
 
     public DisconnectResponse disconnect(Player player) {
-        httpHeaders.add("Content-Type", "application/json");
-        httpHeaders.add("Accept", "*/*");
-
         String endpoint = "/disconnect/";
         String resource = "/user/";
         try {

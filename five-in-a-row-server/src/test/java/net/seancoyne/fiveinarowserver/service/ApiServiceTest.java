@@ -55,29 +55,6 @@ class ApiServiceTest {
     }
 
     @Test
-    public void test_registerPlayer_failed_registration_issue() {
-        // Given
-        RegisterRequest registerRequest = new RegisterRequest();
-        RegisterResponse registerResponse = RegisterResponse.builder()
-                .responseState(ResponseState.FAILED)
-                .build();
-        when(requestDetailsValidator.requiredParametersIsInvalid(registerRequest)).thenReturn(false);
-        when(gameService.registerPlayer(registerRequest)).thenReturn(registerResponse);
-
-        // When
-        ResponseEntity responseEntity = testInstance.registerPlayer(registerRequest);
-
-        // Then
-        assertNotNull(responseEntity);
-
-        assertEquals(registerResponse, responseEntity.getBody());
-        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
-
-        verify(requestDetailsValidator, times(1)).requiredParametersIsInvalid(registerRequest);
-        verify(gameService, times(1)).registerPlayer(registerRequest);
-    }
-
-    @Test
     public void test_registerPlayer_failed_validation() {
         // Given
         RegisterRequest registerRequest = new RegisterRequest();
@@ -118,30 +95,6 @@ class ApiServiceTest {
 
         assertEquals(createGameResponse, responseEntity.getBody());
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-
-        verify(requestDetailsValidator, times(1)).requiredParametersIsInvalid(createGameRequest);
-        verify(gameService, times(1)).createGame(createGameRequest);
-    }
-
-    @Test
-    public void test_createGame_creation_issue() {
-        // Given
-        CreateGameRequest createGameRequest = new CreateGameRequest();
-        CreateGameResponse createGameResponse = CreateGameResponse.builder()
-                .responseState(ResponseState.FAILED)
-                .build();
-
-        when(requestDetailsValidator.requiredParametersIsInvalid(createGameRequest)).thenReturn(false);
-        when(gameService.createGame(createGameRequest)).thenReturn(createGameResponse);
-
-        // When
-        ResponseEntity responseEntity = testInstance.createGame(createGameRequest);
-
-        // Then
-        assertNotNull(responseEntity);
-
-        assertEquals(createGameResponse, responseEntity.getBody());
-        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
 
         verify(requestDetailsValidator, times(1)).requiredParametersIsInvalid(createGameRequest);
         verify(gameService, times(1)).createGame(createGameRequest);
@@ -203,38 +156,6 @@ class ApiServiceTest {
     }
 
     @Test
-    public void test_getGameState_failed_getting_state() {
-        // Given
-        Integer gameId = 0;
-        String username = "username";
-
-        GameStateResponse gameStateResponse = GameStateResponse.builder()
-                .responseState(ResponseState.FAILED)
-                .build();
-
-        when(requestDetailsValidator.requiredParametersIsInvalid(gameId, username)).thenReturn(false);
-        when(gameService.getGameStateForUser(any(GameStateRequest.class))).thenReturn(gameStateResponse);
-
-        // When
-        ResponseEntity responseEntity = testInstance.getGameState(gameId, username);
-
-        // Then
-        assertNotNull(responseEntity);
-
-        assertEquals(gameStateResponse, responseEntity.getBody());
-        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
-
-        verify(requestDetailsValidator, times(1)).requiredParametersIsInvalid(gameId, username);
-
-        ArgumentCaptor<GameStateRequest> stateCaptor = ArgumentCaptor.forClass(GameStateRequest.class);
-        verify(gameService, times(1)).getGameStateForUser(stateCaptor.capture());
-
-        List<GameStateRequest> capturedRequests = stateCaptor.getAllValues();
-        assertEquals(username, capturedRequests.get(0).getUsername());
-        assertEquals(gameId, capturedRequests.get(0).getGameId());
-    }
-
-    @Test
     public void test_getGameState_failed_validation() {
         // Given
         Integer gameId = 0;
@@ -283,29 +204,6 @@ class ApiServiceTest {
     }
 
     @Test
-    public void test_makeMove_failed_making_move() {
-        // Given
-        MoveRequest moveRequest = new MoveRequest();
-        MoveResponse moveResponse = MoveResponse.builder()
-                .responseState(ResponseState.FAILED)
-                .build();
-
-        when(requestDetailsValidator.requiredParametersIsInvalid(moveRequest)).thenReturn(false);
-        when(gameService.makeMove(moveRequest)).thenReturn(moveResponse);
-
-        // When
-        ResponseEntity responseEntity = testInstance.makeMove(moveRequest);
-
-        // Then
-        assertNotNull(responseEntity);
-        assertEquals(moveResponse, responseEntity.getBody());
-        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
-
-        verify(requestDetailsValidator, times(1)).requiredParametersIsInvalid(moveRequest);
-        verify(gameService, times(1)).makeMove(moveRequest);
-    }
-
-    @Test
     public void test_makeMove_failed_validation() {
         // Given
         MoveRequest moveRequest = new MoveRequest();
@@ -348,38 +246,6 @@ class ApiServiceTest {
 
         assertEquals(response, responseEntity.getBody());
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-
-        verify(requestDetailsValidator, times(1)).requiredParametersIsInvalid(gameId, username);
-
-        ArgumentCaptor<DisconnectUserRequest> stateCaptor = ArgumentCaptor.forClass(DisconnectUserRequest.class);
-        verify(gameService, times(1)).disconnectUser(stateCaptor.capture());
-
-        List<DisconnectUserRequest> capturedRequests = stateCaptor.getAllValues();
-        assertEquals(username, capturedRequests.get(0).getUsername());
-        assertEquals(gameId, capturedRequests.get(0).getGameId());
-    }
-
-    @Test
-    public void test_disconnectUser_failed_disconnection_issue() {
-        // Given
-        Integer gameId = 0;
-        String username = "username";
-
-        DisconnectResponse response = DisconnectResponse.builder()
-                .responseState(ResponseState.FAILED)
-                .build();
-
-        when(requestDetailsValidator.requiredParametersIsInvalid(gameId, username)).thenReturn(false);
-        when(gameService.disconnectUser(any(DisconnectUserRequest.class))).thenReturn(response);
-
-        // When
-        ResponseEntity responseEntity = testInstance.disconnectUser(gameId, username);
-
-        // Then
-        assertNotNull(responseEntity);
-
-        assertEquals(response, responseEntity.getBody());
-        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, responseEntity.getStatusCode());
 
         verify(requestDetailsValidator, times(1)).requiredParametersIsInvalid(gameId, username);
 

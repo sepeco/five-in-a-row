@@ -68,7 +68,7 @@ class GameControllerIntegrationTest {
         mockMvc.perform(post("/register")
                 .content(mapper.writeValueAsBytes(registerRequest))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isUnprocessableEntity())
+                .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.responseState").value("FAILED"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("No game with this ID exists"));
     }
@@ -87,7 +87,7 @@ class GameControllerIntegrationTest {
         mockMvc.perform(put("/makeMove")
                 .content(mapper.writeValueAsBytes(moveRequest))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isUnprocessableEntity())
+                .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.responseState").value("FAILED"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("No game with this ID exists"));
     }
@@ -98,7 +98,7 @@ class GameControllerIntegrationTest {
         String username = "username";
 
         mockMvc.perform(get("/gameState/{gameId}/user/{username}", gameId, username))
-                .andExpect(status().isUnprocessableEntity())
+                .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.responseState").value("FAILED"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("No game with this ID exists"));
 
@@ -110,7 +110,7 @@ class GameControllerIntegrationTest {
         String username = "username";
 
         mockMvc.perform(delete("/disconnect/{gameId}/user/{username}", gameId, username))
-                .andExpect(status().isUnprocessableEntity())
+                .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.responseState").value("FAILED"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("No game with this ID exists"));
 

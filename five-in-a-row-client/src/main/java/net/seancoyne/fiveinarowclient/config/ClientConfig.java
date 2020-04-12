@@ -16,7 +16,11 @@ public class ClientConfig {
 
     @Bean
     public HttpHeaders httpHeaders() {
-        return new HttpHeaders();
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Content-Type", "application/json");
+        httpHeaders.add("Accept", "*/*");
+
+        return httpHeaders;
     }
 
     @Bean

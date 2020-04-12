@@ -24,13 +24,7 @@ public class ApiService {
             return new ResponseEntity<>("Required Parameters Are Invalid", HttpStatus.BAD_REQUEST);
         }
 
-        RegisterResponse response = gameService.registerPlayer(registerRequest);
-
-        if (ResponseState.FAILED.equals(response.getResponseState())) {
-            return new ResponseEntity<>(response, HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(gameService.registerPlayer(registerRequest), HttpStatus.OK);
     }
 
     public ResponseEntity<?> createGame(CreateGameRequest createGameRequest) {
@@ -40,13 +34,7 @@ public class ApiService {
             return new ResponseEntity<>("Required Parameters Are Invalid", HttpStatus.BAD_REQUEST);
         }
 
-        CreateGameResponse response = gameService.createGame(createGameRequest);
-
-        if (ResponseState.FAILED.equals(response.getResponseState())) {
-            return new ResponseEntity<>(response, HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(gameService.createGame(createGameRequest), HttpStatus.OK);
     }
 
     public ResponseEntity<?> getGameState(Integer gameId, String userName) {
@@ -61,13 +49,7 @@ public class ApiService {
                 .username(userName)
                 .build();
 
-        GameStateResponse response = gameService.getGameStateForUser(gameStateRequest);
-
-        if (ResponseState.FAILED.equals(response.getResponseState())) {
-            return new ResponseEntity<>(response, HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(gameService.getGameStateForUser(gameStateRequest), HttpStatus.OK);
     }
 
     public ResponseEntity<?> makeMove(MoveRequest moveRequest) {
@@ -77,13 +59,7 @@ public class ApiService {
             return new ResponseEntity<>("Required Parameters Are Invalid", HttpStatus.BAD_REQUEST);
         }
 
-        MoveResponse response = gameService.makeMove(moveRequest);
-
-        if (ResponseState.FAILED.equals(response.getResponseState())) {
-            return new ResponseEntity<>(response, HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(gameService.makeMove(moveRequest), HttpStatus.OK);
     }
 
     public ResponseEntity<?> disconnectUser(Integer gameId, String username) {
@@ -98,12 +74,6 @@ public class ApiService {
                 .username(username)
                 .build();
 
-        DisconnectResponse response = gameService.disconnectUser(disconnectUserRequest);
-
-        if (ResponseState.FAILED.equals(response.getResponseState())) {
-            return new ResponseEntity<>(response, HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(gameService.disconnectUser(disconnectUserRequest), HttpStatus.OK);
     }
 }
