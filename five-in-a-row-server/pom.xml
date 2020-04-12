@@ -101,7 +101,7 @@
                     </excludes>
                     <archive>
                         <manifest>
-                            <mainClass>net.seancoyne.fiveinarowclient.Application</mainClass>
+                            <mainClass>net.seancoyne.fiveinarowserver.Application</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
