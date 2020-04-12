@@ -93,7 +93,7 @@ public class FiveInARowGame {
                     .responseState(ResponseState.SUCCESS)
                     .gameState(GameState.GAME_OVER)
                     .winner(thisIsTheWinningPlayer)
-                    .message(thisIsTheWinningPlayer ? "Game Over. You Win" : "Game Over. You Lose")
+                    .message("Game Over, " + winningPlayer + " is the winner")
                     .build();
         }
 
@@ -163,7 +163,7 @@ public class FiveInARowGame {
         int height = board.length;
         int  width = board[0].length;
 
-        if (moveRequest.getColumn() > width || moveRequest.getColumn() < 0) {
+        if (moveRequest.getColumn()-1 > width || moveRequest.getColumn()-1 < 0) {
             return MoveResponse.builder()
                     .responseState(ResponseState.FAILED)
                     .tryAgain(true)

@@ -9,5 +9,4 @@ public class MoveResponse {
     private ResponseState responseState;
     private String message;
     private boolean tryAgain;
-    private boolean winningMove;
 }

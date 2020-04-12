@@ -95,7 +95,7 @@ public class GameService {
                     // allow repeat moves if invalid request
                     boolean tryToMakeMove = true;
                     while (tryToMakeMove) {
-                        int nextMove = userInteraction.getPlayerIntegerInputWithMessage("It’s your turn" + player.getUsername() + ", please enter column (" + 1 + "-" + (board[0].length) + ")");
+                        int nextMove = userInteraction.getPlayerIntegerInputWithMessage("It’s your turn " + player.getUsername() + ", please enter column (" + 1 + "-" + (board[0].length) + ")");
                         MoveResponse moveResponse = client.makeMove(player, nextMove);
 
                         if (moveResponse.getResponseState().equals(ResponseState.FAILED)) {
