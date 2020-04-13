@@ -37,7 +37,7 @@ public class GameService {
             return CreateGameResponse.builder()
                     .responseState(ResponseState.FAILED)
                     .gameId(newFiveInARowGame.getGameId())
-                    .message("Could not create a new game for this user")
+                    .message("Could not register this user for the game")
                     .build();
         }
     }
