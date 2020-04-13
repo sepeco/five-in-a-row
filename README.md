@@ -5,11 +5,6 @@ The project consists of a Java server and client.
  - The client is an interface for the user to create a new game and complete with a friend.
  - The server keeps track of the games state.
 
-**N.B.** The server binds to port 8080 when starting up so verify this is free before starting the server.
-
-#### Server swagger endpoint:
-[http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
-
 ## Compile the server and client
 Running this command in the client and server directories will execute the unit tests and package the project into executable jars.
 
@@ -19,6 +14,11 @@ Running this command in the client and server directories will execute the unit 
 After executing the package command the following can be executed against the compiled jar to start up the server. It is required to start the server before the clients.
 
 `java -jar five-in-a-row-server-0.0.1-SNAPSHOT.jar`
+
+**N.B.** The server binds to port 8080 when starting up so verify this is free before starting the server.
+
+#### Server swagger endpoint:
+[http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
 
 ## Starting the client(s)
 After executing the package command on the client, this command can be executed from within the target directory in the client project. This will start a single session of the client.
@@ -55,7 +55,7 @@ We are human and mistakes happen. If you make a mistake entering information in 
 This will bring the user back to the start of the input messages allowing them to try again.
 
 ## How to play a game
-If you have gotten this far, congratulations!!! You and your fiend are ready to play "5 in a row".
+If you have gotten this far, congratulations!!! You and your friend are ready to play "5 in a row".
 
 The game has the following rules:
 
