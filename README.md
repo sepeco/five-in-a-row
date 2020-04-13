@@ -5,6 +5,10 @@ The project consists of a Java server and client.
  - The client is an interface for the user to create a new game and complete with a friend.
  - The server keeps track of the games state.
 
+**N.B.** The server binds to port 8080 when starting up so verify this is free before starting the server.
+
+#### Server swagger endpoint:
+[http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
 
 ## Compile the server and client
 Running this command in the client and server directories will execute the unit tests and package the project into executable jars.
