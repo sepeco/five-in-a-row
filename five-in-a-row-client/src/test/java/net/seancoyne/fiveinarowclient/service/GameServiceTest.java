@@ -208,4 +208,39 @@ class GameServiceTest {
         verify(client, times(1)).getGameState(player);
         verify(userInteraction, times(1)).displayPlayerMessage("Game over. You didn't win");
     }
+
+    @Test
+    void test_play_game_user_disconnects() throws IOException, InterruptedException {
+        // Given
+        Player player = new Player();
+        player.setUsername("username");
+        CreateGameResponse createGameResponse = new CreateGameResponse();
+        createGameResponse.setResponseState(ResponseState.SUCCESS);
+        createGameResponse.setGameId(1);
+
+        when(client.createGame(player)).thenReturn(createGameResponse);
+        testInstance.createNewGame(player);
+
+        GameStateResponse gameStateResponse = new GameStateResponse();
+        gameStateResponse.setGameState(GameState.YOUR_MOVE);
+        gameStateResponse.setWinner(false);
+        gameStateResponse.setCurrentBoard(new String[6][9]);
+
+        when(client.getGameState(player)).thenReturn(gameStateResponse);
+
+        DisconnectResponse disconnectResponse = new DisconnectResponse();
+        disconnectResponse.setMessage("Message");
+        when(client.disconnect(player)).thenReturn(disconnectResponse);
+
+        when(userInteraction.getPlayerIntegerInputWithMessage("It’s your turn username, please enter column (1-9) or (-1 to disconnect)")).thenReturn(-1);
+
+        // When
+        testInstance.play();
+
+        // Then
+        verify(client, times(1)).disconnect(player);
+        verify(client, times(1)).getGameState(player);
+        verify(userInteraction, times(1)).displayPlayerMessage("Game over. You didn't win");
+        verify(userInteraction, times(1)).displayPlayerMessage("Message");
+    }
 }

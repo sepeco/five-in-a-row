@@ -95,7 +95,20 @@ public class GameService {
                     // allow repeat moves if invalid request
                     boolean tryToMakeMove = true;
                     while (tryToMakeMove) {
-                        int nextMove = userInteraction.getPlayerIntegerInputWithMessage("It’s your turn " + player.getUsername() + ", please enter column (" + 1 + "-" + (board[0].length) + ")");
+                        int nextMove = userInteraction.getPlayerIntegerInputWithMessage("It’s your turn " + player.getUsername() + ", please enter column (" + 1 + "-" + (board[0].length) + ") or (-1 to disconnect)");
+
+                        // Give user option to exit game
+                        if (nextMove == -1) {
+                            DisconnectResponse disconnectResponse = client.disconnect(player);
+
+                            if (disconnectResponse != null) {
+                                userInteraction.displayPlayerMessage(disconnectResponse.getMessage());
+                            }
+
+                            activeGame = false;
+                            break;
+                        }
+
                         MoveResponse moveResponse = client.makeMove(player, nextMove);
 
                         if (moveResponse.getResponseState().equals(ResponseState.FAILED)) {
